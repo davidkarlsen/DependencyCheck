@@ -102,7 +102,7 @@ public abstract class AbstractSuppressionAnalyzer extends AbstractAnalyzer {
      * @throws SuppressionParseException thrown if the XML cannot be parsed.
      */
     private void loadSuppressionData() throws SuppressionParseException {
-        String suppressionFilePath = Settings.getString(Settings.KEYS.SUPPRESSION_FILE);
+        final String suppressionFilePath = Settings.getString(Settings.KEYS.SUPPRESSION_FILE);
         if (suppressionFilePath == null) {
             return;
         }
@@ -112,7 +112,7 @@ public abstract class AbstractSuppressionAnalyzer extends AbstractAnalyzer {
             final Pattern uriRx = Pattern.compile("^(https?|file)\\:.*", Pattern.CASE_INSENSITIVE);
             if (uriRx.matcher(suppressionFilePath).matches()) {
                 deleteTempFile = true;
-                file = File.createTempFile("suppression", "xml", Settings.getTempDirectory());
+                file = FileUtils.getTempFile("suppression", "xml");
                 final URL url = new URL(suppressionFilePath);
                 try {
                     Downloader.fetchFile(url, file, false);
